@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Nilai Akademik</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .display {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+            font-size: 1.5em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .button {
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="input-group">
+        <label for="nas">Nilai Akhir Sikap (NAS):</label>
+        <input type="number" id="nas" class="display" step="0.01">
+    </div>
+    <div class="input-group">
+        <label for="nak">Nilai Akhir Ketrampilan (NAK):</label>
+        <input type="number" id="nak" class="display" step="0.01">
+    </div>
+    <div class="input-group">
+        <label for="uam_cbt">Ujian Akhir Mata Kuliah CBT (UAM CBT):</label>
+        <input type="number" id="uam_cbt" class="display" step="0.01">
+    </div>
+    <div class="input-group">
+        <label for="uam_ident">Ujian Akhir Mata Kuliah IDENT (UAM IDENT):</label>
+        <input type="number" id="uam_ident" class="display" step="0.01">
+    </div>
+    <div class="input-group">
+        <label for="uas">Ujian Akhir Semester (UAS):</label>
+        <input type="number" id="uas" class="display" step="0.01">
+    </div>
+    <button class="button" onclick="calculateGrade()">Hitung Nilai Akhir</button>
+    <div class="input-group">
+        <label for="final_score">Nilai Akhir:</label>
+        <input type="number" id="final_score" class="display" step="0.01" disabled>
+    </div>
+    <div class="input-group">
+        <label for="grade_letter">Nilai Huruf:</label>
+        <input type="text" id="grade_letter" class="display" disabled>
+    </div>
+</div>
+
+<script>
+    function calculateGrade() {
+        let nas = parseFloat(document.getElementById('nas').value);
+        let nak = parseFloat(document.getElementById('nak').value);
+        let uam_cbt = parseFloat(document.getElementById('uam_cbt').value);
+        let uam_ident = parseFloat(document.getElementById('uam_ident').value);
+        let uas = parseFloat(document.getElementById('uas').value);
+
+        if (isNaN(nas) || isNaN(nak) || isNaN(uam_cbt) || isNaN(uam_ident) || isNaN(uas)) {
+            alert("Harap masukkan semua nilai.");
+            return;
+        }
+
+        let uam = (0.7 * uam_cbt) + (0.3 * uam_ident);
+        let nap = (0.4 * uam) + (0.6 * uas);
+        let finalScore = (0.7 * nap) + (0.15 * nak) + (0.15 * nas);
+
+        document.getElementById('final_score').value = finalScore.toFixed(2);
+        document.getElementById('grade_letter').value = getGradeLetter(finalScore);
+    }
+
+    function getGradeLetter(score) {
+        if (score >= 80) return "A (4,0)";
+        if (score >= 75) return "AB (3,5)";
+        if (score >= 70) return "B (3,0)";
+        if (score >= 65) return "BC (2,5)";
+        if (score >= 60) return "C (2,0)";
+        if (score >= 55) return "CD (1,5)";
+        if (score >= 50) return "D (1,0)";
+        return "E (0)";
+    }
+</script>
+
+</body>
+</html>
